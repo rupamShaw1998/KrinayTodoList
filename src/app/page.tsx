@@ -4,7 +4,7 @@ import { SessionProvider, useSession } from 'next-auth/react';
 import React, { useState } from 'react';
 import { api } from "@/utils/api";
 
-export function HomePage() {
+function Home() {
   const { data: session } = useSession();
   const [title, setTitle] = useState("");
   const [details, setDetails] = useState("");
@@ -54,10 +54,10 @@ export function HomePage() {
   );
 }
 
-export default function Home() {
+export default function HomePage() {
   return (
     <SessionProvider>
-      <HomePage />
+      <Home />
     </SessionProvider>
   );
 }
