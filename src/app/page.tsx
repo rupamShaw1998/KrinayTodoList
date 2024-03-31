@@ -1,13 +1,15 @@
-import { useSession } from 'next-auth/react';
-import React, { useState } from 'react';
-import { api } from "~/utils/api";
+'use client';
 
-export default function Home() {
+import { SessionProvider, useSession } from 'next-auth/react';
+import React, { useState } from 'react';
+import { api } from "@/utils/api";
+
+export function HomePage() {
   const { data: session } = useSession();
   const [title, setTitle] = useState("");
   const [details, setDetails] = useState("");
 
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
 
   const { data, isLoading: todosLoading } = 
       api.todo.getTodosByUser.useQuery(session?.user?.id ?? "");
@@ -18,7 +20,9 @@ export default function Home() {
       setDetails("");
       void ctx.todo.getTodosByUser.invalidate()
     }
-  })
+  });
+
+  console.log("TODOS: ", data);
   
   return (
     <div className="flex grow flex-col">
@@ -47,5 +51,13 @@ export default function Home() {
         >Add Todo</button>
       </div>
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <SessionProvider>
+      <HomePage />
+    </SessionProvider>
   );
 }
