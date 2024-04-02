@@ -3,6 +3,14 @@
 import { SessionProvider, useSession } from 'next-auth/react';
 import React, { useState } from 'react';
 import { api } from "@/utils/api";
+import { Header } from './_components/header';
+
+interface Todo {
+  id: string;
+  title: string;
+  details: string;
+  done: boolean;
+}
 
 function Home() {
   const { data: session } = useSession();
@@ -22,25 +30,35 @@ function Home() {
     }
   });
 
+  const { mutate: setDoneMutate } = api.todo.setDone.useMutation({
+    onSuccess: () => {
+      void ctx.todo.getTodosByUser.invalidate();
+    }
+  });
+
+  const { mutate: deleteMutate } = api.todo.deleteTodo.useMutation({
+    onSuccess: () => {
+      void ctx.todo.getTodosByUser.invalidate();
+    }
+  });
+
   console.log("TODOS: ", data);
   
   return (
     <div className="flex grow flex-col">
-      {data?.map((todo:any) => (
-        <div>{ todo.title }</div>
-      ))}
+      <Header />
       <div>
         <input 
           type="text"
-          placeholder="Title"
+          placeholder="Enter Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-        />
+          />
         <textarea 
-          placeholder="Details"
+          placeholder="Enter Details"
           value={details}
           onChange={(e) => setDetails(e.target.value)}
-        />
+          />
         <button
           onClick={() => mutate({ 
             userId: session?.user.id ?? "", 
@@ -48,7 +66,28 @@ function Home() {
             details: details, 
             done: false 
           })}
-        >Add Todo</button>
+          >Add Todo</button>
+      </div>
+      <div className='grid grid-cols-3 gap-4'>
+        {data?.map((todo:Todo) => (
+          <div className={`text-white border border-black ${todo.done ? "bg-green-500" : "bg-red-500"}`}>
+            <input
+              type="checkbox" 
+              onChange={() => setDoneMutate({
+                id: todo.id,
+                done: !todo.done
+              })}
+            />
+            <p className='font-bold'>{todo.title}</p>
+            <p>{todo.details}</p>
+            <p className='font-semibold'>{todo.done? "Completed" : "Incomplete"}</p>
+            <button
+              onClick={() => deleteMutate(todo.id)}
+            >
+              Remove
+            </button>
+          </div>
+        ))}
       </div>
     </div>
   );
