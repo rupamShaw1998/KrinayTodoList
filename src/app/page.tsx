@@ -47,30 +47,35 @@ function Home() {
   return (
     <div className="flex grow flex-col">
       <Header />
-      <div>
+      <div className="flex grow flex-col w-1/3">
         <input 
+          className='m-2 border border-blue-300'
           type="text"
           placeholder="Enter Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          />
+        />
         <textarea 
+          className='m-2 border border-blue-300'
           placeholder="Enter Details"
           value={details}
           onChange={(e) => setDetails(e.target.value)}
-          />
+        />
         <button
+          className='w-48 border m-2 bg-blue-300 rounded p-2'
           onClick={() => mutate({ 
             userId: session?.user.id ?? "", 
             title: title, 
             details: details, 
             done: false 
           })}
-          >Add Todo</button>
+        >
+          Add Todo
+        </button>
       </div>
-      <div className='grid grid-cols-3 gap-4'>
+      <div className='grid grid-cols-3 gap-4 m-2'>
         {data?.map((todo:Todo) => (
-          <div className={`text-white border border-black ${todo.done ? "bg-green-500" : "bg-red-500"}`}>
+          <div className={`text-white border rounded p-2 shadow-md ${todo.done ? "bg-green-500" : "bg-red-500"}`}>
             <input
               type="checkbox" 
               onChange={() => setDoneMutate({
