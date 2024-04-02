@@ -87,6 +87,7 @@ function Home() {
             <p>{todo.details}</p>
             <p className='font-semibold'>{todo.done? "Completed" : "Incomplete"}</p>
             <button
+              className='bg-black p-1 rounded'
               onClick={() => deleteMutate(todo.id)}
             >
               Remove

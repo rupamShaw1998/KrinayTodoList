@@ -6,6 +6,9 @@ A basic todo list web application created with T3 stack.
 ## Project Type
 Fullstack
 
+## Deployed App
+https://krinay-todo-list-1sf1.vercel.app/
+
 ## Directory Structure
 src/
 ├─ app
