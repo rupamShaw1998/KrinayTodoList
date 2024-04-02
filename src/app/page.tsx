@@ -19,7 +19,7 @@ function Home() {
 
   const ctx = api.useUtils();
 
-  const { data, isLoading: todosLoading } = 
+  const { data } = 
       api.todo.getTodosByUser.useQuery(session?.user?.id ?? "");
 
   const { mutate } = api.todo.createTodo.useMutation({
@@ -75,7 +75,7 @@ function Home() {
       </div>
       <div className='grid grid-cols-3 gap-4 m-2'>
         {data?.map((todo:Todo) => (
-          <div className={`text-white border rounded p-2 shadow-md ${todo.done ? "bg-green-500" : "bg-red-500"}`}>
+          <div key={todo.id} className={`text-white border rounded p-2 shadow-md ${todo.done ? "bg-green-500" : "bg-red-500"}`}>
             <input
               type="checkbox" 
               onChange={() => setDoneMutate({
