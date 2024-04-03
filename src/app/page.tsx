@@ -78,6 +78,7 @@ function Home() {
           <div key={todo.id} className={`text-white border rounded p-2 shadow-md ${todo.done ? "bg-green-500" : "bg-red-500"}`}>
             <input
               type="checkbox" 
+              checked={todo.done}
               onChange={() => setDoneMutate({
                 id: todo.id,
                 done: !todo.done
